@@ -1,0 +1,25 @@
+#!/bin/bash
+#PBS -P xc0
+#PBS -q copyq
+#PBS -l other=gdata1
+#PBS -l software=python
+#PBS -a 0100
+#PBS -l mem=50MB
+#PBS -l walltime=2:00:00
+#PBS -l jobfs=1GB
+#PBS -l wd
+#PBS -o /g/data/xc0/project/APWM/ECMWF/tigge/getTiggeGrib.output.log
+#PBS -e /g/data/xc0/project/APWM/ECMWF/tigge/getTiggeGrib.error.log
+#
+## Run the ECMWF update for the TIGGE dataset.
+
+module load python
+module load gdal/1.11.1-python
+
+cd /g/data/xc0/original/TimeSeries/Climate/Forecasts/ECMWF/
+umask g+rw
+python /g/data/xc0/project/APWM/ECMWF/tigge/ecmwfGetTiggeGrib.py > /g/data/xc0/original/TimeSeries/Climate/Forecasts/ECMWF/update-log.txt;
+
+#re-add to queue
+qsub /g/data/xc0/project/APWM/ECMWF/tigge/getTiggeGrib.qsub
+

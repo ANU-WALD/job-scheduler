@@ -1,0 +1,24 @@
+#!/bin/bash
+#PBS -P xc0
+#PBS -q copyq
+#PBS -l other=gdata1
+#PBS -l software=python
+#PBS -l mem=50MB
+#PBS -l walltime=5:00:00
+#PBS -o /g/data/xc0/project/APWM/ECMWF/eraint/getEraInt.output.log
+#PBS -e /g/data/xc0/project/APWM/ECMWF/eraint/getEraInt.error.log
+#
+## Run the ECMWF update for the ERA-Interim dataset.
+## Check monthly, although the dataset is produced quarterly.
+## This file fetches .grib format, as the matlab code already parses that.
+## A netcdf version was written for testing, but is not used.
+
+module load python
+
+cd /g/data1/xc0/original/TimeSeries/Climate/ERA-Interim/ecmwf
+umask g+rw
+
+python ecmwfGetEraIntGrib.py > /g/data1/xc0/original/TimeSeries/Climate/ERA-Interim/ecmwf/update-log.txt;
+
+cd -
+
