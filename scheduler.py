@@ -1,12 +1,4 @@
 #!/usr/bin/env python
-#PBS -q normal
-#PBS -l walltime=05:00
-#PBS -l mem=50MB
-#PBS -l ncpus=1
-#PBS -a 0001
-#PBS -o scheduler.output.log
-#PBS -e scheduler.error.log
-
 """
 Schedules all other jobs to run, with dependancies.
 
@@ -21,29 +13,34 @@ from datetime import date
 import subprocess
 import time
 
-base_dir = '/g/data/xc0/projects/apwm'
+
+def schedule(jobfile, after_ids=None):
+    """Schedule a job, with dependancies and log files."""
+    args = ['qsub', jobfile,
+            '-o', 'logs/'+jobfile+'.stdout',
+            '-e', 'logs/'+jobfile+'.stderr']
+    if after_id is not None:
+        if not isinstance(after_ids, list):
+            after_ids = [after_ids]
+        args.extend(['-W', 'depend=afterany:'+':'.join(after_ids)])
+    return subprocess.check_output(args)
 
 #Queue TIGGE, get job id
-tigge_job_id = subprocess.check_output(['qsub', 'ECMWF/tigge/getTiggeGribNow.qsub'])
-
-input_data_job_list = [tigge_job_id]
+input_data_job_list = [schedule('getTigge.qsub')]
 
 #If it is time for an ERA-Int check, do this as well
 day_of_month = date.today().day
 if day_of_month == 1:
-    eraint_job_id = subprocess.check_output(['qsub', 'ECMWF/eraint/getEraIntNow.qsub'])
-    input_data_job_list.append(eraint_job_id)    
+    input_data_job_list.append(schedule('getEraInt.qsub'))    
 
 #Queue the APWM
-depend_arg = 'depend=afterany:'+':'.join(input_data_job_list)
-apwm_job_id = subprocess.check_output(['qsub', 'scripts3/apwm_run_only.qsub', '-W', depend_arg])
+apwm_job_id = schedule('apwm.qsub', input_data_job_list)
 
 #Queue the map plot & transfer
-depend_arg = 'depend=afterany:{}'.format(apwm_job_id)
-map_plot_job_id = subprocess.check_output(['qsub', 'pythonmaps/runmap.qsub', '-W', depend_arg])
+maps_job_id = schedule('plotmap.qsub', apwm_job_id)
 
 #Queue the published data appending
-
+schedule('upload.qsub', maps_job_id)
 
 '''
 #Run MODSI 8-day tasks
@@ -64,10 +61,10 @@ elif eight_day_number == 3:
     #Create a JSON report
     #Upload to wenfo
 
-# Finally, wait a two minutes so we're after scheduled time and reschedule.
-time.sleep(120)
-subprocess.check_output(['qsub', 'scheduler.qsub.py'])datetime.datetime.now().isoformat()
+# Finally, wait a minute so we're after scheduled time and reschedule.
+time.sleep(60)
 
-print('Finished rescheduling all at ' + datetime.datetime.now().isoformat()
+print('Finished all at ' + datetime.datetime.now().isoformat() + ', rescheduling...')
+# scheduler.qsub reschedules itself.
 
 

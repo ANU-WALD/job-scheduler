@@ -1,3 +1,9 @@
+# FTP credentials (etc)
+_*
+
+# logfiles
+log/*
+
 # Temporary files
 *~
 
