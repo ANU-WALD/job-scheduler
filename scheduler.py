@@ -16,13 +16,16 @@ import time
 
 def schedule(jobfile, after_ids=None):
     """Schedule a job, with dependancies and log files."""
-    args = ['qsub', jobfile,
+    args = ['qsub',
             '-o', 'logs/'+jobfile+'.stdout',
-            '-e', 'logs/'+jobfile+'.stderr']
+            '-e', 'logs/'+jobfile+'.stderr',
+            '-W', 'umask=017', # allow group read/write of produced files
+            ]
     if after_id is not None:
         if not isinstance(after_ids, list):
             after_ids = [after_ids]
-        args.extend(['-W', 'depend=afterany:'+':'.join(after_ids)])
+        args.append('depend=afterany:' + ':'.join(after_ids))
+    args.append(jobfile)
     return subprocess.check_output(args)
 
 #Queue TIGGE, get job id

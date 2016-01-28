@@ -17,7 +17,7 @@ SCHED_DIR=$(pwd)
 cd /g/data/xc0/original/TimeSeries/Climate/Forecasts/ECMWF/
 
 umask g+rw
-python $SCHED_DIR/ecmwfGetTiggeGrib.py > update-log.txt;
+python $SCHED_DIR/ecmwfGetTiggeGrib.py >> update-log.txt;
 
 cd -
 
