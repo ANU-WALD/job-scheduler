@@ -1,6 +1,6 @@
 #!/bin/bash
-#PBS -q normal
-#PBS -l walltime=05:00
+#PBS -q express
+#PBS -l walltime=02:00
 #PBS -l mem=50MB
 #PBS -l ncpus=1
 #PBS -l software=python
