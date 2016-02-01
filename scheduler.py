@@ -21,11 +21,12 @@ def schedule(jobfile, after_ids=None):
             '-e', 'logs/'+jobfile+'.stderr',
             '-W', 'umask=017', # allow group read/write of produced files
             ]
-    if after_id is not None:
+    if after_ids is not None:
         if not isinstance(after_ids, list):
             after_ids = [after_ids]
-        args.append('depend=afterany:' + ':'.join(after_ids))
-    args.append(jobfile)
+        args[-1] += ',depend=afterany:' + ':'.join([a.split('.')[0] for a in after_ids])
+    args.append('./' + jobfile)
+    print('Scheduling:  ' + ' '.join(args))
     return subprocess.check_output(args)
 
 #Queue TIGGE, get job id
