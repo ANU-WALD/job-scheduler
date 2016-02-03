@@ -10,7 +10,6 @@
 module load matlab/R2014b
 
 cd /g/data/xc0/project/APWM/scripts3
-umask g+rw
 
 matlab -nodesktop -nosplash -singleCompThread -r apwm_shell
 

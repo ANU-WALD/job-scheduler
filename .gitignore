@@ -2,7 +2,7 @@
 _*
 
 # logfiles
-log/*
+logs/*
 
 # Temporary files
 *~

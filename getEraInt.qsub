@@ -14,9 +14,4 @@
 module load python
 
 cd /g/data1/xc0/original/TimeSeries/Climate/ERA-Interim/ecmwf
-
-umask g+rw
-python $SCHED_DIR/ecmwfGetEraIntGrib.py > update-log.txt;
-
-cd -
-
+python ~/job-scheduler/ecmwfGetEraIntGrib.py

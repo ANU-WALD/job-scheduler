@@ -11,11 +11,12 @@ module load python/2.7.5
 module load python/2.7.5-matplotlib
 module load geos
 module load intel-cc/12.1.9.293
-#module load gtk/2.24.21
 
+# makes "import basemap" work; can't pip install it...
 export PYTHONPATH=$PATHONPATH:/short/xc0/python-modules/lib/python
 
-python plotmap.py \
+# args are input dir, output dir, logging level
+python ./job-scheduler/plotmap.py \
 	-i /short/xc0/zjh157/apwm/maps/global/nc \
 	-o /g/data1/ub8/apwm/APWM/latest \
 	-l info

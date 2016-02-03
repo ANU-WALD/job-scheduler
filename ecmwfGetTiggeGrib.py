@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-import datetime 
-import calendar 
+import datetime
 import os
-import tempfile
 
-from ecmwfapi import ECMWFDataServer 
+from ecmwfapi import ECMWFDataServer
 from ecmwfapi.api import APIException
 
 # Parameters for the fetch.
@@ -27,25 +25,12 @@ timeStep = 1
 # Loop through dates by month.
 date = startDate
 while(date <= endDate):
-
-    # Code for monthly timestep (uncomment if required).
-    #daysInMonth = calendar.monthrange(date.year, date.month)[1]
-    #timeStep = daysInMonth
-    #getDate = str(date) + "/to/" + str(date.replace(day=daysInMonth))
-
     # Code for daily timestep.
     getDate = str(date)
-    #if (not os.path.isdir('{0:%Y}'.format(date))):
-    #    print("Make dir <{0:%Y}>".format(date))
-    #    os.makedirs('{0:%Y}'.format(date))
-
     for param, short_name in zip(params, short_names):
 
         target = "ecmwf.{date:%Y-%m-%d}.{param}.grib".format(date=date, param=param)
-        #target = "{date:%Y}/{shortname}-ecmwfc-{date:%Y%m%d}.nc".format(date=date, shortname=short_name)
-
-        print ("Fetching date " + getDate + ", param " + param +
-               " to " + target)
+        print ("Fetching date {}, param {} to {}".format(getDate, param, target))
 
         if (os.path.exists(target) and os.path.getsize(target) == 0):
             print("Removing empty file -- " + target + " and trying again.")

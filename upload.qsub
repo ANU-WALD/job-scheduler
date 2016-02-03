@@ -8,4 +8,4 @@
 
 module load python
 
-python upload.py
+python ./job-scheduler/upload.py

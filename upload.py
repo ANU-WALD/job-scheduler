@@ -1,6 +1,5 @@
 import ftplib
 import os
-import os.path
 
 def upload(ftp, file):
     print "Uploading ", file
@@ -10,7 +9,7 @@ def upload(ftp, file):
     else:
         ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
 
-with open('_FTP_CREDENTIALS') as f:
+with open('/g/data/xc0/user/HatfieldDodds/_FTP_CREDENTIALS') as f:
     auth = f.read().split()
 
 ftp = ftplib.FTP("ftp.wenfo.org")

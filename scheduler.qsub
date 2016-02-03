@@ -8,8 +8,8 @@
 
 module load python
 
-cd /g/data/xc0/project/APWM/job-scheduler
+cd job-scheduler
 git pull
 python scheduler.py
-
 qsub scheduler.qsub
+

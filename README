@@ -47,3 +47,13 @@ Design Principles
 * Anyone using or modifying this system is assumed to have at least skimmed
   `man qsub`.
 
+
+Requirements to run
+===================
+This list is probably incomplete, but hopefully useful anyway.
+
+- member of the matlab_anu group (to run model)
+- read/write access to /short/user/adh157 on Raijin
+- ECMWF access key in ~/.ecmwfapirc (see https://software.ecmwf.int/wiki/display/WEBAPI)
+- A clone of this repo in your home dir on raijin
+
