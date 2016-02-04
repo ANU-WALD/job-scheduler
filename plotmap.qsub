@@ -16,8 +16,8 @@ module load intel-cc/12.1.9.293
 export PYTHONPATH=$PATHONPATH:/short/xc0/python-modules/lib/python
 
 # args are input dir, output dir, logging level
-python ./job-scheduler/plotmap.py \
-	-i /short/xc0/zjh157/apwm/maps/global/nc \
+python ~/job-scheduler/plotmap.py \
+	-i /short/xc0/adh157/apwm/maps/global/nc \
 	-o /g/data1/ub8/apwm/APWM/latest \
 	-l info
 
