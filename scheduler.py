@@ -17,7 +17,8 @@ import time
 
 def schedule(jobfile, after_ids=None):
     """Schedule a job, with dependancies and log files."""
-    logfile = 'logs/{}_{}'.format(jobfile, datetime.date.today().isoformat())
+    logfile = '/g/data/xc0/user/HatfieldDodds/logs/{}_{}'.format(
+        jobfile, datetime.date.today().isoformat())
     args = ['qsub',
             '-o', logfile + '.stdout',
             '-e', logfile + '.stderr',

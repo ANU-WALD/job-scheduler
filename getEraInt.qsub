@@ -12,8 +12,6 @@
 ## A netcdf version was written for testing, but is not used.
 
 module load python
-# makes "import ecmwfapi" work
-export PYTHONPATH=$PATHONPATH:~/job-scheduler
 
 cd /g/data1/xc0/original/TimeSeries/Climate/ERA-Interim/ecmwf
 python ~/job-scheduler/ecmwfGetEraIntGrib.py
