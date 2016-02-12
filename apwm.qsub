@@ -3,7 +3,7 @@
 #PBS -l walltime=2:00:00
 #PBS -l mem=4GB
 #PBS -l ncpus=1
-#PBS -l software=matlab
+#PBS -l software=matlab_anu
 #PBS -l wd
 #PBS -l other=gdata1
 
