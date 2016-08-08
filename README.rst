@@ -6,7 +6,7 @@ A collection of high-level scripts to manage data fetching and analysis
 jobs on the National Conputational Infrastructure for the ANU Water and
 Landscape Dnyamics Group (WALD, NCI group xc0).
 
-They use the `qsub` job scheduler, and recurrence is acheived by having
+They use the ``qsub`` job scheduler, and recurrence is acheived by having
 the top-level job reschedule itself for the next day.
 
 
@@ -28,7 +28,7 @@ Design Principles
 =================
 (TODO: bring implementation up to described standard)
 
-* Each task should be run from a bash script with a `.qsub` file extension,
+* Each task should be run from a bash script with a ``.qsub`` file extension,
   which lists the job resource requirements (queue, RAM, CPU, walltime, etc).
 
 * Complex tasks may simply delegate to an external script, though for simple
@@ -45,7 +45,7 @@ Design Principles
   for that task.
 
 * Anyone using or modifying this system is assumed to have at least skimmed
-  `man qsub`.
+  ``man qsub``.
 
 
 Requirements to run
@@ -53,7 +53,7 @@ Requirements to run
 This list is probably incomplete, but hopefully useful anyway.
 
 - member of the matlab_anu group (to run model)
-- read/write access to /short/user/adh157 on Raijin
-- ECMWF access key in ~/.ecmwfapirc (see https://software.ecmwf.int/wiki/display/WEBAPI)
+- read/write access to ``/short/user/adh157`` on Raijin
+- ECMWF access key in ``~/.ecmwfapirc`` (see https://software.ecmwf.int/wiki/display/WEBAPI)
 - A clone of this repo in your home dir on raijin
 
