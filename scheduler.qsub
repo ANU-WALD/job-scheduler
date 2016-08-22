@@ -11,5 +11,3 @@ module load python
 cd job-scheduler
 git pull
 python scheduler.py
-qsub scheduler.qsub
-

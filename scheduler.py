@@ -12,47 +12,55 @@ from __future__ import division, print_function, unicode_literals
 
 import datetime
 import subprocess
-import time
+
+
+# JOBS maps each job to a list of jobs to complete first
+# Most jobs run unconditionally on a daily schedule
+JOBS = {
+    'getTigge.qsub': [],
+    'apwm.qsub': ['getTigge.qsub', 'getEraInt.qsub'],
+    'plotmap.qsub': ['apwm.qsub'],
+    'upload.qsub': ['plotmap.qsub'],
+    }
+
+# download ERA-Interim data on the first of the month only
+if 1 or datetime.date.today().day == 1:
+    JOBS['getEraInt.qsub'] = []
+
+# scheduler.qsub is this script; runs after the midnight after all other jobs
+    JOBS['scheduler.qsub'] = list(JOBS)
+
 
 
 def schedule(jobfile, after_ids=None):
-    """Schedule a job, with dependancies and log files."""
+    """Schedule a job, with dependencies and log files."""
     logfile = '/g/data/xc0/user/HatfieldDodds/logs/{}_{}'.format(
         jobfile, datetime.date.today().isoformat())
     args = ['qsub',
             '-o', logfile + '.stdout',
             '-e', logfile + '.stderr',
             '-W', 'umask=017']
-    if after_ids is not None:
-        if not isinstance(after_ids, list):
-            after_ids = [after_ids]
-        args[-1] += ',depend=afterany:' + ':'.join([a.split('.')[0] for a in after_ids])
+    if after_ids:
+        args[-1] += ',depend=afterany:' + ':'.join(after_ids)
     args.append('./' + jobfile)
     print('Scheduling:  ' + ' '.join(args))
-    return subprocess.check_output(args)
+    return subprocess.check_output(args).split('.')[0]
 
-#Queue TIGGE, get job id
-input_data_job_list = [schedule('getTigge.qsub')]
 
-#If it is time for an ERA-Int check, do this as well
-if datetime.date.today().day == 1:
-    input_data_job_list.append(schedule('getEraInt.qsub'))
+def do_schedule():
+    """The main function."""
+    def sub_order(job):
+        """Sorting key for job submission based on depth of dependency tree."""
+        after = JOBS.get(job)
+        return 1 + max(sub_order(j) for j in after) if after else 0
 
-#Queue the APWM
-apwm_job_id = schedule('apwm.qsub', input_data_job_list)
+    queue = sorted(JOBS, key=sub_order)
+    job_ids = {}
+    for job in queue:
+        after = [job_ids[j] for j in JOBS[job] if j in JOBS]
+        job_ids[job] = schedule(job, after)
+    print('Finished all at ' + datetime.datetime.now().isoformat())
 
-#Queue the map plot & transfer
-maps_job_id = schedule('plotmap.qsub', apwm_job_id)
 
-#Queue the published data appending
-schedule('upload.qsub', maps_job_id)
-
-#Reporting ideas
-    #Create a JSON report
-    #Upload to wenfo
-
-# Finally, wait a minute so we're after scheduled time and reschedule.
-time.sleep(60)
-
-print('Finished all at ' + datetime.datetime.now().isoformat() + ', rescheduling...')
-# scheduler.qsub reschedules itself.
+if __name__ == '__main__':
+    do_schedule()
