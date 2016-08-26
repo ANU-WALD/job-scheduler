@@ -38,6 +38,8 @@ def schedule(jobfile, after_ids=None):
     args = ['qsub',
             '-o', logfile + '.stdout',
             '-e', logfile + '.stderr',
+            '-l', 'other=gdata1',
+            '-P', 'xc0',
             '-W', 'umask=017']
     if after_ids:
         args[-1] += ',depend=afterany:' + ':'.join(after_ids)

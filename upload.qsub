@@ -1,8 +1,5 @@
 #!/bin/bash
-#PBS -P xc0
 #PBS -q copyq
-#PBS -l other=gdata1
-#PBS -l wd
 #PBS -l walltime=5:00
 #PBS -l software=python
 
