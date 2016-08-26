@@ -19,8 +19,7 @@ import subprocess
 JOBS = {
     'getTigge.qsub': [],
     'apwm.qsub': ['getTigge.qsub', 'getEraInt.qsub'],
-    'plotmap.qsub': ['apwm.qsub'],
-    'upload.qsub': ['plotmap.qsub'],
+    'upload.qsub': ['apwm.qsub'],
     }
 
 # download ERA-Interim data on the first of the month only
