@@ -46,7 +46,7 @@ def do_schedule():
     """The main function."""
     def sub_order(job):
         """Sorting key for job submission based on depth of dependency tree."""
-        after = JOBS.get(job)
+        after = JOBS.get(job, [])
         return 1 + max([sub_order(j) for j in after] + [0])
 
     job_ids = dict()
@@ -55,7 +55,7 @@ def do_schedule():
         job_ids[job] = schedule(job, after)
 
         # scheduler.qsub runs this script after the midnight after all other jobs
-    schedule('scheduler.qsub', list(JOBS))
+    schedule('scheduler.qsub', list(job_ids.values()))
     print('Finished all at ' + datetime.datetime.now().isoformat())
 
 
