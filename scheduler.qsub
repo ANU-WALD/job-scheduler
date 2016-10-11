@@ -3,10 +3,6 @@
 #PBS -l walltime=02:00
 #PBS -a 0001
 #PBS -l mem=50MB
-#PBS -l software=python
-
-# do the scheduler thing
-module load python
 
 cd job-scheduler
 git pull

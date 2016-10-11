@@ -8,38 +8,11 @@ to finding data within the supplied and structured input dir, processing it,
 and saving maps to a specified output dir.
 
 Generation of the data and uploads to the website are handled by other tools.
-
-As of 2015-09-16, the following helper scripts are used to schedule and
-execute a run on Raijin, and include scheduling the consequent upload to
-http://www.wenfo.org/apwm/
-
-cat runmap.qsub
-    #!/bin/bash
-    #PBS -P xc0
-    #PBS -q express
-    #PBS -l walltime=3:00
-    #PBS -l ncpus=1
-    #PBS -l mem=4GB
-    sh /g/data/xc0/project/APWM/pythonmaps/runmap.sh;
-
-cat runmap.sh
-    module load python/2.7.5
-    module load python/2.7.5-matplotlib
-    module load geos
-    module load intel-cc/12.1.9.293
-    export PYTHONPATH=$PATHONPATH:/short/xc0/python-modules/lib/python
-    python /g/data/xc0/project/APWM/pythonmaps/apwm-maps/plotmap.py \
-        -i /short/xc0/adh157/apwm/maps/global/nc \
-        -o /g/data1/ub8/apwm/APWM/latest \
-        -l info
-    qsub /g/data/xc0/project/APWM/transfer/upload.qsub
+(see https://github.com/ANU-WALD/job-scheduler).  As of 2016-10-11, the script
+can be run under the xc0 group's "apwm-plotmap" conda environment.
+("conda create -n apwm-plotmap numpy matplotlib scipy basemap python=3")
 """
-
 #pylint:disable=invalid-name,no-member,logging-format-interpolation
-
-#Ready for Python3
-from __future__ import division, print_function, unicode_literals
-
 # Standard library imports
 import argparse
 import datetime

@@ -2,29 +2,24 @@
 #PBS -q normal
 #PBS -l walltime=2:05:00
 #PBS -l mem=4GB
-#PBS -l software=matlab_anu:python
+#PBS -l software=matlab_anu
 
 # Run the model
 
 module load matlab/R2014b
 
-cd /g/data/xc0/project/APWM/scripts3
+pushd /g/data/xc0/project/APWM/scripts3
 
 matlab -nodesktop -nosplash -singleCompThread -r apwm_shell
 
-cd -
+popd
 
+# Distinguish the logs...
+echo "********************"
 
 # plot maps to upload with Python
-
-module load python/2.7.5
-module load python/2.7.5-matplotlib
-module load geos
-module load intel-cc/12.1.9.293
-
-# makes "import basemap" work; can't pip install it...
-export PYTHONPATH=$PATHONPATH:/short/xc0/python-modules/lib/python
-
+# load an environment with the needed packages
+source activate apwm-plotmaps
 # args are input dir, output dir, logging level
 python ~/job-scheduler/plotmap.py \
 	-i /short/xc0/adh157/apwm/maps/global/nc \

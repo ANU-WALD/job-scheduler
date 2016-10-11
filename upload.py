@@ -2,7 +2,7 @@ import ftplib
 import os
 
 def upload(ftp, file):
-    print "Uploading ", file
+    print("Uploading ", file)
     ext = os.path.splitext(file)[1]
     if ext in (".txt", ".htm", ".html"):
         ftp.storlines("STOR " + file, open(file))

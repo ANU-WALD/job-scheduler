@@ -1,8 +1,5 @@
 #!/bin/bash
 #PBS -q copyq
 #PBS -l walltime=5:00
-#PBS -l software=python
-
-module load python
 
 python ~/job-scheduler/upload.py
