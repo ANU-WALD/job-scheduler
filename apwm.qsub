@@ -19,7 +19,7 @@ echo "********************"
 
 # plot maps to upload with Python
 # load an environment with the needed packages
-source activate apwm-plotmaps
+source activate apwm-plotmap
 # args are input dir, output dir, logging level
 python ~/job-scheduler/plotmap.py \
 	-i /short/xc0/adh157/apwm/maps/global/nc \
