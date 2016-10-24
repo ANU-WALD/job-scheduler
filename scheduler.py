@@ -37,7 +37,10 @@ def schedule(jobfile, after_ids=None):
         args[-1] += ',depend=afterany:' + ':'.join(after_ids)
     args.append('./' + jobfile)
     print('Scheduling:  ' + ' '.join(args))
-    return subprocess.check_output(args).split('.')[0]
+    output = subprocess.check_output(args)
+    if isinstance(output, bytes):
+        output = output.decode()
+    return output.split('.')[0]
 
 
 def do_schedule():
