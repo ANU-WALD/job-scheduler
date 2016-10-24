@@ -12,6 +12,7 @@ Generation of the data and uploads to the website are handled by other tools.
 can be run under the xc0 group's "apwm-plotmap" conda environment.
 ("conda create -n apwm-plotmap numpy matplotlib scipy basemap python=3")
 """
+from __future__ import division, print_function, unicode_literals
 #pylint:disable=invalid-name,no-member,logging-format-interpolation
 # Standard library imports
 import argparse
@@ -153,9 +154,7 @@ class MapStyles(object):
         data at some coastlines."""
         data[data == -9999] = np.nan
         data[data == self.nanval] = np.nan
-        max_, min_ = max(self.values), min(self.values)
-        data[data > max_] = max_
-        data[data < min_] = min_
+        np.clip(data, min(self.values), max(self.values), out=data)
         for axis, shift in ((0, -1), (1, 1), (0, 1), (1, -1)):
             dropin = np.roll(data, shift, axis=axis)
             data = np.where(np.isnan(data), dropin, data)
