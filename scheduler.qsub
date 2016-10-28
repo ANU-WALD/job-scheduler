@@ -4,6 +4,8 @@
 #PBS -a 0001
 #PBS -l mem=50MB
 
+set -e
+
 cd job-scheduler
 git pull
 python scheduler.py

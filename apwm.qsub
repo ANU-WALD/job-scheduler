@@ -4,6 +4,8 @@
 #PBS -l mem=4GB
 #PBS -l software=matlab_anu
 
+set -e
+
 # Run the model
 
 module load matlab/R2014b

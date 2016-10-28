@@ -2,4 +2,6 @@
 #PBS -q copyq
 #PBS -l walltime=5:00
 
+set -e
+
 python ~/job-scheduler/upload.py

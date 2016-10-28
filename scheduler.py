@@ -22,7 +22,7 @@ if datetime.date.today().day == 1:
     JOBS['getEraInt.qsub'] = []
 
 
-def schedule(jobfile, after_ids=None):
+def schedule(jobfile, after_ids=None, depend='afterok'):
     """Schedule a job, with dependencies and log files."""
     logfile = '/g/data/xc0/user/HatfieldDodds/logs/{}_{}'.format(
         jobfile, datetime.date.today().isoformat())
@@ -31,10 +31,11 @@ def schedule(jobfile, after_ids=None):
             '-e', logfile + '.stderr',
             '-l', 'other=gdata1',
             '-P', 'xc0',
+            '-m', 'e',
             '-W', 'umask=017']
     if after_ids:
         # 'afterany' means "after all jobs complete with any status"
-        args[-1] += ',depend=afterany:' + ':'.join(after_ids)
+        args[-1] += ',depend=' + depend + ':' + ':'.join(after_ids)
     args.append('./' + jobfile)
     print('Scheduling:  ' + ' '.join(args))
     output = subprocess.check_output(args)
@@ -56,7 +57,7 @@ def do_schedule():
         job_ids[job] = schedule(job, after)
 
         # scheduler.qsub runs this script after the midnight after all other jobs
-    schedule('scheduler.qsub', list(job_ids.values()))
+    schedule('scheduler.qsub', list(job_ids.values()), depend='afterany')
     print('Finished all at ' + datetime.datetime.now().isoformat())
 
 

@@ -3,7 +3,8 @@
 #PBS -l software=python
 #PBS -l mem=50MB
 #PBS -l walltime=2:00:00
-#PBS -l jobfs=1GB
+
+set -e
 
 ## Run the ECMWF update for the TIGGE dataset.
 

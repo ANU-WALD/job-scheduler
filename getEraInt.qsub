@@ -3,7 +3,9 @@
 #PBS -l software=python
 #PBS -l mem=50MB
 #PBS -l walltime=5:00:00
-#
+
+set -e
+
 ## Run the ECMWF update for the ERA-Interim dataset.
 ## Check monthly, although the dataset is produced quarterly.
 ## This file fetches .grib format, as the matlab code already parses that.

@@ -359,5 +359,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=args.loglevel.upper())
     if not os.path.isdir(args.inputdir):
         log.error('Input dir does not exist: ' + args.inputdir)
+        raise SystemExit
     else:
         goMap()
