@@ -31,7 +31,8 @@ def schedule(jobfile, after_ids=None, depend='afterok'):
             '-e', logfile + '.stderr',
             '-l', 'other=gdata1',
             '-P', 'xc0',
-            '-m', 'e',
+            # On error or abort, mail a report to $USER and Albert Van Dijk
+            '-m', 'e', '-M', '$USER,albert.vandijk@anu.edu.au',
             '-W', 'umask=017']
     if after_ids:
         # 'afterany' means "after all jobs complete with any status"
