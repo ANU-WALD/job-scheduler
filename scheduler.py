@@ -25,14 +25,14 @@ if datetime.date.today().day == 1:
 def schedule(jobfile, after_ids=None, depend='afterok'):
     """Schedule a job, with dependencies and log files."""
     logfile = '/g/data/xc0/user/HatfieldDodds/logs/{}_{}'.format(
-        jobfile, datetime.date.today().isoformat())
+        datetime.date.today().isoformat(), jobfile.rstrip('.qsub'))
     args = ['qsub',
-            '-o', logfile + '.stdout',
-            '-e', logfile + '.stderr',
+            '-o', logfile + '.out',
+            '-e', logfile + '.err',
             '-l', 'other=gdata1',
             '-P', 'xc0',
             # On error or abort, mail a report to $USER and Albert Van Dijk
-            '-m', 'e', '-M', '$USER,albert.vandijk@anu.edu.au',
+            '-m', 'ae', '-M', '$USER,albert.vandijk@anu.edu.au',
             '-W', 'umask=017']
     if after_ids:
         # 'afterany' means "after all jobs complete with any status"
