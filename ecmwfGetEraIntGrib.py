@@ -51,7 +51,7 @@ while date <= endDate:
                     'param' : param,
                     'target' : target
                     })
-            except Exception, e:
+            except Exception as e:
                 print(str(e))
             if os.path.exists(target) and not os.path.getsize(target):
                 os.remove(target)

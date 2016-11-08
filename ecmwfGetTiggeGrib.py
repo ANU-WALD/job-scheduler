@@ -13,8 +13,8 @@ short_names = ["NETrad", "tmax", "tmin", "precip"]
 startDate = datetime.date.today() - datetime.timedelta(120) #days
 endDate = datetime.date.today() - datetime.timedelta(1) #days - ECWMF has a 2-day embargo
 
-print "Starting at: " + str(startDate)
-print "Ending: at " + str(endDate)
+print("Starting at: " + str(startDate))
+print("Ending: at " + str(endDate))
 
 # Server parameters - now found in $HOME/.ecmwfapi
 server = ECMWFDataServer()
@@ -30,13 +30,13 @@ while(date <= endDate):
     for param, short_name in zip(params, short_names):
 
         target = "ecmwf.{date:%Y-%m-%d}.{param}.grib".format(date=date, param=param)
-        print ("Fetching date {}, param {} to {}".format(getDate, param, target))
 
         if (os.path.exists(target) and os.path.getsize(target) == 0):
             print("Removing empty file -- " + target + " and trying again.")
             os.remove(target)
 
         if (not os.path.exists(target)):
+            print ("Fetching date {}, param {} to {}".format(getDate, param, target))
             try:
                 server.retrieve({
                     'dataset' : "tigge",
@@ -51,8 +51,8 @@ while(date <= endDate):
                     'param'   : param,
                     'target'  : target
                     })
-            except APIException, e:
-                print 'APIException:', str(e)
+            except APIException as e:
+                print('APIException:', str(e))
             if (os.path.exists(target) and os.path.getsize(target) == 0):
                 os.remove(target)
         else:
