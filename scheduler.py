@@ -22,7 +22,7 @@ if datetime.date.today().day == 1:
     JOBS['getEraInt.qsub'] = []
 
 
-def schedule(jobfile, after_ids=None, depend='afterok'):
+def schedule(jobfile, after_ids=None, depend='afterany'):
     """Schedule a job, with dependencies and log files."""
     logfile = '/g/data/xc0/user/HatfieldDodds/logs/{}_{}'.format(
         datetime.date.today().isoformat(), jobfile.rstrip('.qsub'))
