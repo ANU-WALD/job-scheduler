@@ -11,4 +11,4 @@ git pull
 python scheduler.py
 
 # delete log files more than two weeks old
-find /g/data/xc0/user/HatfieldDodds/logs/*.qsub_*.std{err,out} -mtime +14 -type f -delete
+find /g/data1/xc0/user/HatfieldDodds/logs/????-??-??_*.{err,out} -mtime +14 -type f -delete
