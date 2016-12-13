@@ -6,6 +6,7 @@ Reschedules itself to run a minute past midnight tomorrow.
 """
 
 import datetime
+import os
 import subprocess
 
 
@@ -22,7 +23,7 @@ if datetime.date.today().day == 1:
     JOBS['getEraInt.qsub'] = []
 
 
-def schedule(jobfile, after_ids=None, depend='afterany'):
+def schedule(jobfile, after_ids=None):
     """Schedule a job, with dependencies and log files."""
     logfile = '/g/data/xc0/user/HatfieldDodds/logs/{}_{}'.format(
         datetime.date.today().isoformat(), jobfile.rstrip('.qsub'))
@@ -32,11 +33,11 @@ def schedule(jobfile, after_ids=None, depend='afterany'):
             '-l', 'other=gdata1',
             '-P', 'xc0',
             # On error or abort, mail a report to $USER and Albert Van Dijk
-            '-m', 'e', '-M', '$USER,albert.vandijk@anu.edu.au',
+            '-M', os.environ['USER'] + ',albert.vandijk@anu.edu.au',
             '-W', 'umask=017']
     if after_ids:
         # 'afterany' means "after all jobs complete with any status"
-        args[-1] += ',depend=' + depend + ':' + ':'.join(after_ids)
+        args[-1] += ',depend=afterany:' + ':'.join(after_ids)
     args.append('./' + jobfile)
     print('Scheduling:  ' + ' '.join(args))
     output = subprocess.check_output(args)
@@ -57,8 +58,8 @@ def do_schedule():
         after = [job_ids[j] for j in JOBS[job] if j in JOBS]
         job_ids[job] = schedule(job, after)
 
-        # scheduler.qsub runs this script after the midnight after all other jobs
-    schedule('scheduler.qsub', list(job_ids.values()), depend='afterany')
+    # schedule the scheduler after midnight and all other jobs have finished
+    schedule('scheduler.qsub', list(job_ids.values()))
     print('Finished all at ' + datetime.datetime.now().isoformat())
 
 
